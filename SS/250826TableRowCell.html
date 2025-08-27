@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Table</h2>
+
+<p>A script on this page starts this clock:</p>
+
+<p id="demo"></p>
+<p id="date1"></p>
+<p id="forDemo"></p>
+
+<button onclick="myTimer()">start time</button>
+
+<button onclick="stopTimer()">Stop time</button>
+
+<script>
+
+</script>
+    // https://www.youtube.com/watch?v=Vwba1tkIZk0
+    // Access table by its ID
+    let table = document.getElementById("myTable");
+    // Access Rows and Cells, select rows and cells within a table
+    let rows = table.rows;
+    let firstRowCells = rows[0].cell;
+    // Iterating over cells: Looping through cells to access their data
+    for (let index = 0; index < rows.length; index++) {
+    let cells = rows [index].cells;
+    for (let j = 0 ; j < cells.length; j++) {
+    console.log(cells[j].innerText);
+</body>
+</html>
