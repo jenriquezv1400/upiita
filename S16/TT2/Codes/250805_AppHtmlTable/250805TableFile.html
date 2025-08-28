@@ -1,0 +1,358 @@
+<html>
+<!-- 
+HTML Tables with JavaScript https://www.youtube.com/watch?v=Vwba1tkIZk0
+-> How To Create a Table With JavaScript https://www.youtube.com/watch?v=ueINL-6fFo0
+-->
+    <style>
+        body {
+               background-color: gray; 
+            }
+        tr:nth-child(even) {
+                background-color: grey;
+            }
+
+        /* width */
+        ::-webkit-scrollbar {
+        width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+        }
+        
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+        background: #888; 
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+        background: #555; 
+        }
+
+        /*text-align: left;
+            padding: 8px;
+            */
+        /*
+        th, td, p {
+            
+            color: white;
+            }
+            */
+        
+        /*
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #D6EEEE;
+            
+            }
+          */  
+
+    </style>
+
+    <body > <!--style="background-color:grey;"-->
+        <p >
+            <!-- 250814 10:17 -->
+            <span id="date1" ></span>
+            <input type="button" value="Copy Table" onClick="copytable('dataTable')">
+            Language: <span id="languageSpan" ></span> <br>
+            
+        </p> 
+        <!--
+        <select name="lenguage" id="lenguage">
+            <option value="german">Alemán</option>
+            <option value="spanish">Español, Inglés</option>
+            
+            
+        </select>
+        -->
+
+        <p id="languageDemo"></p>
+        
+
+        <table id="dataTable">
+            <tr> 
+                <th>Val_1</th> 
+                <th>Val_2</th> 
+            </tr> 
+            <!--
+            <tr> 
+                <td> 0.0</td> 
+                <td> 0.1</td> 
+            </tr>
+            -->
+
+            <!--
+            <tbody id="dataTable" >
+                <h4> Sensors' data table </h4>
+            </tbody>
+            -->
+        </table>
+
+        <!--
+        <button type="button" onclick="btnFunction()">Try it</button>
+
+        
+        -->
+        
+    
+        <script>
+            const d = new Date();
+            let year =  d.getFullYear();
+            let month = d.getMonth() + 1;
+            let date =  d.getDate();
+            let hour =  d.getHours();
+            let minutes =  d.getMinutes() ;
+
+            document.getElementById("date1").innerHTML = year +"." + month + "."+ date + " " + hour +":" +minutes;
+            /*
+            function btnFunction() {
+                var x = document.getElementById("lenguage").value;
+                document.getElementById("demo").innerHTML = x;
+            }
+            */
+            
+            var appInventorInput = window.AppInventor.getWebViewString();
+            const result = appInventorInput.split(",");
+            document.getElementById("languageSpan").innerHTML = result[result.length-1];
+            //document.getElementById("demo").innerHTML = appInventorInput <br> result[0] , result[1];
+            //document.write("Actual lengueage is: " + result[result.length-1] +"<br>");
+            //document.write("Actual length is: " + result.length);
+            //document.write("Actual Matrix is<br />" +  result.length + "<br>" + appInventorInput + "<br>");
+
+            if (result[result.length-1] == "Alemán") {
+               document.getElementById("languageDemo").innerHTML = "Good day!";
+            }
+
+            var componentsData = [
+                //{Val_1: result[0], Val_2: result[1]}
+                //{Val_1: '0.1', Val_2: '0.2'}
+            ];
+            for (var i = 0; i < result.length/3; i++){
+                componentsData[i] = {Val_1: result[i*3], Val_2: result[i*3+1]}
+            }
+            
+
+            BuildTable(componentsData);
+
+            function BuildTable(data){
+                var table = document.getElementById('dataTable');
+
+                for (var i = 0; i < data.length; i++){
+                    var row = `<tr>
+							<td>${data[i].Val_1}</td>
+							<td>${data[i].Val_2}</td>
+					  </tr>`
+                    table.innerHTML += row
+                    //<td>${data[i].Val_1}</td>
+                    //table.rows[1].cells[1].innerText = "a"
+                } 
+            //document.write("Actual Data length: <br />" + data.length);
+            //<td>${data.length}</td>               
+            }
+
+            function copytable(el) {
+                var urlField = document.getElementById(el)
+                var range = document.createRange()
+                range.selectNode(urlField)
+                window.getSelection().addRange(range)
+                document.execCommand('copy')
+            }
+            
+            
+        </script>
+        
+        <!--
+        <script>
+            document.write("The value from the app is<br />" + window.AppInventor.getWebViewString());
+            //window.AppInventor.setWebViewString("hello from Javascript")
+        </script>
+        -->
+        <!--
+        <p id="demo"></p>
+        
+        <script>
+            document.getElementById("demo").innerHTML = "<table><tr> <th>Val 1</th> <th>Val 2</th> </tr> <tr> <td> 0.0</td> <td> 0.1</td> </tr></table>";
+        </script>
+        -->
+        
+        
+        <!--
+        <p id="demo"></p>
+        
+        <script>
+            let text = "0,1";
+            const myArray = text.split(",");
+
+            //document.getElementById("demo").innerHTML = myArray[0];
+            var table = document.getElementById('dataTable');
+
+            
+            var row = `<tr>
+                        <td>${myArray[0]}</td>
+                        <td>${myArray[1]}</td>
+                    </tr>`
+
+            table.innerHTML += row
+            
+            /*`<tr>
+							<td>${myArray[0].Val_1}</td>
+							<td>${myArray[1].Val_2}</td>
+					  </tr>`; 
+            */
+            
+        </script>
+        -->
+        
+        
+
+        <!--
+        <p id="demo2"></p>
+
+        
+        <script>
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+
+        var x = document.getElementById("demo2");
+        x.innerHTML = "Browser width: " + w + ", height: " + h + ".";
+        </script>
+        -->
+
+        <!-- <input type="text" value="Hello World" id="myInput">-->
+        <!--table properties:
+            style="border:solid"
+        -->
+        <p>
+            Language2: <span id="languageSpan2" ></span> <br>
+            <span id="languageSpanVal2" ></span> <br>
+            <span id="componentsData2Sapan" ></span> <br>
+            <span id="replaceSpan" ></span>
+
+        </p>
+
+        <p id="replaceDemo">Mr Blue has a blue house and a blue car.</p>
+
+        <table id="dataTable2"> 
+            <tr>
+                <th> var_1</th>
+                <th> var_2</th>
+            </tr>
+            <!--
+            <tr>
+                <td> 0</td>
+                <td> 1</td>
+            </tr>
+
+            <tr>
+                <td> 0.1</td>
+                <td> 1.1</td>
+            </tr>
+            -->
+        </table>
+
+        
+
+        <script>
+            var stringArray = "1.0,2.0,Alemán";
+            const array = stringArray.split(",");
+            document.getElementById("languageSpan2").innerHTML = array[array.length-1];
+
+            if (array[array.length-1] == "Alemán") {
+               document.getElementById("languageSpanVal2").innerHTML = "Good day!";
+            }
+
+            var componentsData2 = [];
+
+            for (var i = 0; i < array.length/3; i++){
+                componentsData2[i] = {Val_1: array[i*3], Val_2: array[i*3+1]};
+            }
+            //document.getElementById("componentsData2Sapan").innerHTML = co;
+
+            BuildTable2(componentsData2);
+
+            function BuildTable2(data){
+                var table2 = document.getElementById('dataTable2');
+
+                for (var i = 0; i < data.length; i++){
+                    var row2 = `<tr>
+							<td>${data[i].Val_1}</td>
+							<td>${data[i].Val_2}</td>
+					  </tr>`
+                    table2.innerHTML += row2
+                } 
+            }
+
+            var arrayReplaced = [];
+
+            for (var i = 0; i < array.length; i++){
+                arrayReplaced[i] = array[i].replace(".",",");
+            }
+            
+            document.getElementById("replaceSpan").innerHTML = arrayReplaced[0];
+        </script>
+    
+        <!--
+        <div class="dropdown">
+            <button class="dropbtn">Dropdown</button>
+                <div class="dropdown-content">
+                    <a href="#">Español, Inglés</a>
+                    <a href="#">Alemán</a>
+                </div>
+        </div>
+        -->
+
+            <!--
+            <tbody id="dataTable" >
+                <h4> Sensors' data table </h4>
+            </tbody>
+            <tbody id="dataTable2" >
+                <h4> Sensors' data table 2</h4>
+            </tbody>
+            -->
+        <!--
+        <button onclick="myFunction()">Copy text</button>
+
+        <script>
+
+        function myFunction() {
+
+            var copy = source.cloneNode(true);
+            copy.setAttribute('id', 'tableA');
+
+            // Get the text field
+            var copyText = document.getElementById("myInput");
+
+            // Select the text field
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+
+            // Copy the text inside the text field
+            //navigator.clipboard.writeText(copyText.value);
+            navigator.clipboard.writeText(copy);
+            
+            // Alert the copied text
+            //alert("Copied the text: " + copyText.value);
+            alert("Copied the text: " + copy);
+
+
+        }
+        </script>
+        -->
+        
+
+        
+
+        <!--
+        <table id="stats">
+        <tr>
+            <td>hello</td>
+            <td>hello</td>
+        </tr>
+        </table>
+        -->
+        
+    </body>
+</html>

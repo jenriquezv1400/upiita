@@ -1,0 +1,201 @@
+<html>
+    <style>
+        body {
+               background-color: gray; 
+            }
+        tr:nth-child(even) {
+                background-color: grey;
+            }
+
+        /* width */
+        ::-webkit-scrollbar {
+        width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+        }
+        
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+        background: #888; 
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+        background: #555; 
+        }
+
+    </style>
+
+    <body > 
+        <p >
+            <span id="date1" ></span>
+            <input type="button" value="Copy Table" onClick="copytable('dataTable')">
+            Language: <span id="languageSpan" ></span> <br>      
+        </p> 
+        <p id="languageDemo"></p>
+        
+
+        <table id="dataTable">
+            <tr> 
+                <th>Val_1</th> 
+                <th>Val_2</th> 
+            </tr> 
+        </table>
+
+    
+        <script>
+            // ===== Set date ============
+            const d = new Date();
+            let year =  d.getFullYear();
+            let month = d.getMonth() + 1;
+            let date =  d.getDate();
+            let hour =  d.getHours();
+            let minutes =  d.getMinutes() ;
+            
+            document.getElementById("date1").innerHTML = year +"." + month + "."+ date + " " + hour +":" +minutes;
+
+            // ===== Get data App invento and split ============
+            var appInventorInput = window.AppInventor.getWebViewString();
+            const result = appInventorInput.split(",");
+            
+            // ===== Change langugue  ============
+            document.getElementById("languageSpan").innerHTML = result[result.length-1];
+            if (result[result.length-1] == "Alemán") {
+               document.getElementById("languageDemo").innerHTML = "Good day!";
+            }
+
+            var arrayReplaced = [];
+
+            for (var i = 0; i < result.length; i++){
+                arrayReplaced[i] = result[i].replace(".",",");
+            }
+
+            // ====== Make componentsData object ======
+            var componentsData = [];
+            for (var i = 0; i < result.length/3; i++){
+                if (result[result.length-1] == "Alemán") {
+                    componentsData[i] = {Val_1: arrayReplaced[i*3], Val_2: arrayReplaced[i*3+1]}
+                }else{
+                    componentsData[i] = {Val_1: result[i*3], Val_2: result[i*3+1]}
+                }
+                
+            }
+            
+            // ====== Build table function ======
+            BuildTable(componentsData);
+
+            function BuildTable(data){
+                var table = document.getElementById('dataTable');
+
+                for (var i = 0; i < data.length; i++){
+                    var row = `<tr>
+							<td>${data[i].Val_1}</td>
+							<td>${data[i].Val_2}</td>
+					  </tr>`
+                    table.innerHTML += row
+                }               
+            }
+
+            // ====== Copy table function ======
+            function copytable(el) {
+                var urlField = document.getElementById(el)
+                var range = document.createRange()
+                range.selectNode(urlField)
+                window.getSelection().addRange(range)
+                document.execCommand('copy')
+            }
+            
+            
+        </script>
+
+        <!-- ============ Test code =========-->
+        <label for="fname">First name:</label>
+        <input type="text" id="fname" name="fname">
+
+        <!-- Select languague 
+        <select id="lenguageSelect">
+            <option value="Alemán">Alemán</option>
+            <option value="Español-Inglés">Español-Inglés</option>
+        </select>
+        -->
+        <button type="button" onclick="myFunction()">Try it</button>
+
+        <!-- Show data -->
+        <p>
+            Language2: <span id="languageSpan2" ></span> <br>
+            
+            <!--<span id="languageSpanVal2" ></span> <br>--> 
+            <span id="componentsData2Sapan" ></span> <br>
+            <span id="replaceSpan" ></span> <br>
+        </p>
+
+        <!-- Define table -->
+        <table id="dataTable2"> 
+            <tr>
+                <th> var_1</th>
+                <th> var_2</th>
+            </tr>
+        </table>
+
+
+        <script>
+            function myFunction() {
+                // ======= Get data and split ===
+                //1.2,2.3,Alemán
+                var inputArray = document.getElementById("fname").value;
+                document.getElementById("componentsData2Sapan").innerHTML = inputArray;
+                const array = inputArray.split(",");
+
+                // ===== Change langugue  ============
+                //var x = document.getElementById("lenguageSelect").value;
+                //document.getElementById("languageSpan2").innerHTML = x;
+                document.getElementById("languageSpan2").innerHTML = array[array.length-1];
+                /*
+                if (array[array.length-1] == "Alemán") {
+                    document.getElementById("languageSpanVal2").innerHTML = "Good day!";
+                }
+                else{
+                    document.getElementById("languageSpanVal2").innerHTML = "";
+                }
+                */
+                var arrayReplaced = [];
+
+                for (var i = 0; i < array.length; i++){
+                    arrayReplaced[i] = array[i].replace(".",",");
+                }
+                
+                document.getElementById("replaceSpan").innerHTML = arrayReplaced[0];
+
+                // ====== Make componentsData object ======
+                var componentsData2 = [];
+                for (var i = 0; i < array.length/3; i++){
+                    if (array[array.length-1] == "Alemán") {
+                        componentsData2[i] = {Val_1: arrayReplaced[i*3], Val_2: arrayReplaced[i*3+1]}
+                    }else{
+                        componentsData2[i] = {Val_1: array[i*3], Val_2: array[i*3+1]};
+                    } 
+                }
+
+                // ====== Build table function ======
+                BuildTable2(componentsData2);
+
+                function BuildTable2(data){
+                    var table2 = document.getElementById('dataTable2');
+
+                    for (var i = 0; i < data.length; i++){
+                        var row2 = `<tr>
+                                <td>${data[i].Val_1}</td>
+                                <td>${data[i].Val_2}</td>
+                        </tr>`
+                        table2.innerHTML += row2
+                    } 
+                }
+
+                
+            }
+        </script>
+    </body>
+</html>
