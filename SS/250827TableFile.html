@@ -137,7 +137,9 @@
             Current array: <span id="currentSpan" ></span>            <br>         
             Language: <span id="languageSpan2" ></span>    <br>
             language Span Val: <span id="languageSpanVal2" ></span>            <br>
-            CellsLength: <span id="cellsLength" ></span>                   
+            Array replaced: <span id="arrayReplaced" ></span>            <br>
+            Rows Length: <span id="rowsLengthSpan" ></span>   <br>                
+            Cells Length: <span id="cellsLength" ></span>                   
 
         </p>       
 
@@ -170,6 +172,13 @@
 
                 // == Make data split array===
                 const array = bleDataMatrix.split(",");
+
+                // ====== Make componentsData object ======
+                var componentsData2 = [];
+                for (var i = 0; i < array.length-2; i++){
+                    componentsData2[i] = {Val_1: array[i*3], Val_2: array[i*3+1]};
+                }
+                
                 // === Make arrya of arrays ====
                 if (startFlag == 0){
                     initialLength = bleDataMatrix.split(",").length-2;                    
@@ -190,23 +199,33 @@
                 // ===== Change langugue  ============
                 document.getElementById("languageSpan2").innerHTML = array[array.length-1];
 
-                // ====== Make componentsData object ======
-                var componentsData2 = [];
-                for (var i = 0; i < array.length-2; i++){
-                    componentsData2[i] = {Val_1: array[i*3], Val_2: array[i*3+1]};
-                }
-                
-                
                 // ==== Array Repleced ======
                 var arrayReplaced = [];
+                /*
                 for (var i = 0; i < array.length; i++){
                     arrayReplaced[i] = array[i].replace(".",",");
                 }
+                */
+                for (var i = 0; i < arrayOfArrays.length; i++){
+                    arrayReplaced[i] = arrayOfArrays[i].replace(".",",");
+                }
+                
+                document.getElementById("arrayReplaced").innerHTML = arrayReplaced;
+                
+                
                 
                 // ====== Call Build table function ======
                 if (array[array.length-1] == "Alemán") {
                     document.getElementById("languageSpanVal2").innerHTML = "Good day!";
-                    BuildTableTest(arrayReplaced,'dataTable2');
+                    //BuildTableTest(arrayReplaced,'dataTable2');
+                    if (startFlag == 0){
+                        //BuildTableTest(arrayOfArrays,'dataTable2');
+                        BuildTableHeaders('dataTable2');
+                    }
+                    else {
+                        BuildTableInsertRow(arrayOfArrays,'dataTable2');
+                        //BuildTableRowCells(arrayOfArrays,'dataTable2');
+                    }
                 } else {
                     document.getElementById("languageSpanVal2").innerHTML = "";
                     //BuildTableTest(array,'dataTable2');
@@ -242,10 +261,12 @@
                     //var cell2 = row.insertCell(1);
 
                     let rows = table.rows;
-
+                    
+                    
                     for (var i = 0; i < initialLength; i++){
-
+                        row.insertCell(i).innerHTML = data[rows.length-1][i];//i*rows.length;// + cells.length
                     } 
+                    
 
                     for (let index = 1; index < rows.length; index++) {
                         let cells = rows[index].cells;
@@ -253,11 +274,13 @@
                                 //table.rows[index].cells[j].innerText = (i+1)*j;    //console.log(cells[j].innerText);
                             }
                         }
-                    //row.insertCell(0).innerHTML = "NEW CELL " + cells.length;
-                    //cell1.innerHTML = "NEW CELL " + cells.length;
+                    
+                    //cell1.innerHTML = "NEW CELL ";//1.0,2.0,3.0,4,5,6,7,8,9.0,10.0,11.0,0000,Alemá
                     //cell2.innerHTML = "NEW CELL2";
 
-                    document.getElementById("cellsLength").innerHTML = data.length;                        
+                    
+                    document.getElementById("rowsLengthSpan").innerHTML = rows.length;
+                    document.getElementById("cellsLength").innerHTML = initialLength;                        
                 }
 
                 
