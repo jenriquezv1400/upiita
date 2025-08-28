@@ -1,0 +1,286 @@
+<html>
+    <style>
+        body {
+               background-color: gray; 
+            }
+        tr:nth-child(even) {
+                background-color: grey;
+            }
+
+        /* width */
+        ::-webkit-scrollbar {
+        width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+        }
+        
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+        background: #888; 
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+        background: #555; 
+        }
+
+    </style>
+
+    <body >
+        <p >           
+            <span id="date1" ></span>
+            <input type="button" value="Copy Table" onClick="copytable('dataTable')">
+            Language: <span id="languageSpan" ></span> <br>
+        </p> 
+        <p id="languageDemo"></p>      
+
+        <table id="dataTable">
+            <tr> 
+                <th>Val_1</th> 
+                <th>Val_2</th> 
+            </tr> 
+        </table>     
+    
+        <script>
+            // ===== Set date ============
+            const d = new Date();
+            let year =  d.getFullYear();
+            let month = d.getMonth() + 1;
+            let date =  d.getDate();
+            let hour =  d.getHours();
+            let minutes =  d.getMinutes() ;
+
+            document.getElementById("date1").innerHTML = year +"." + month + "."+ date + " " + hour +":" +minutes;
+
+            // ===== Get data App invento and split ============
+            var appInventorInput = window.AppInventor.getWebViewString();
+            const aInventorSplit = appInventorInput.split(",");
+
+            // ===== Change langugue  ============
+            document.getElementById("languageSpan").innerHTML = aInventorSplit[aInventorSplit.length-1];
+            var arrayReplaced = [];
+
+            for (var i = 0; i < aInventorSplit.length; i++){
+                arrayReplaced[i] = aInventorSplit[i].replace(".",",");
+            }
+
+            // ====== Make componentsData object ======
+            var componentsData = [];
+            for (var i = 0; i < aInventorSplit.length/3; i++){
+                componentsData[i] = {Val_1: aInventorSplit[i*3], Val_2: aInventorSplit[i*3+1]}
+            }
+            
+            // ====== Build table function ======
+            if (aInventorSplit[aInventorSplit.length-1] == "Alemán") {
+                document.getElementById("languageDemo").innerHTML = "Good day!";
+                BuildTable3(arrayReplaced,'dataTable');
+            } else {
+                document.getElementById("languageDemo").innerHTML = "";
+                BuildTable3(aInventorSplit,'dataTable');
+            }
+            
+            function BuildTable(data){
+                var table = document.getElementById('dataTable');
+
+                for (var i = 0; i < data.length; i++){
+                    var row = `<tr>
+							<td>${data[i].Val_1}</td>
+							<td>${data[i].Val_2}</td>
+					  </tr>`
+                    table.innerHTML += row
+                }              
+            }
+
+            // ====== Copy table function ======
+            function copytable(el) {
+                var urlField = document.getElementById(el)
+                var range = document.createRange()
+                range.selectNode(urlField)
+                window.getSelection().addRange(range)
+                document.execCommand('copy')
+            }
+
+            // ====== Build table function 2 ======
+            function BuildTable3(data,tableName){
+                var table2 = document.getElementById(tableName);
+                let newRowBT3 = ``;
+
+                for (var i = 0; i < data.length-2; i++){
+                    if (data[i] == "0000") {
+                            newRowBT3 = newRowBT3.concat(   `<tr>
+                                                            <td>${data[i]}</td>
+                                                        </tr>`);
+                        }else{
+                            newRowBT3 = newRowBT3.concat(`<td>${data[i]}</td>`);
+                        }
+                }   
+                table2.innerHTML += newRowBT3;
+            }
+            
+            
+        </script>
+
+        <!-- ============ Test code =========-->
+        <!-- Input Data -->
+        <label for="fname">Array:</label>
+        <input type="text" id="arrayInput" name="fname">
+        <button type="button" onclick="myFunction()">Up date</button>
+
+        <!-- Show data -->
+        <p>
+            StringBleDataMatrix: <span id="bleDataMatrixSpan" ></span>    <br>
+            Initial length: <span id="initialLengthSpan" ></span>    <br>
+            Array of arrays: <span id="aArraysSpan" ></span>            <br>         
+            Current array: <span id="currentSpan" ></span>            <br>         
+            Language: <span id="languageSpan2" ></span>    <br>
+            language Span Val: <span id="languageSpanVal2" ></span>            <br>
+            CellsLength: <span id="cellsLength" ></span>                   
+
+        </p>       
+
+        <!-- Define table -->
+
+        <table id="dataTable2"> 
+        
+        </table>
+
+        <script>
+            let bleDataMatrix = "";
+            var initialLength ;
+            var startFlag = 0;
+            let arrayOfArrays = [];
+            const rowArray = [];
+            function myFunction() {
+                // ======= Get data and split ===
+                //"1.0,2.0,3.0,4,5,6,7,8,9.0,10.0,11.0,0000,Alemán"
+                
+                var inputArray = document.getElementById("arrayInput").value;
+                if (bleDataMatrix == ""){
+                    bleDataMatrix = inputArray;
+                }
+                else{
+                    bleDataMatrix = bleDataMatrix.concat(",",inputArray);
+                }
+                
+                // === Show ble data concactenated string =======
+                document.getElementById("bleDataMatrixSpan").innerHTML = bleDataMatrix;
+
+                // == Make data split array===
+                const array = bleDataMatrix.split(",");
+                // === Make arrya of arrays ====
+                if (startFlag == 0){
+                    initialLength = bleDataMatrix.split(",").length-2;                    
+                }
+                document.getElementById("initialLengthSpan").innerHTML = initialLength;
+
+                for (var i = 0; i < startFlag + 1; i++){
+                    for (var i = 0; i < startFlag + 1; i++){
+                        
+                    }
+                }
+
+                arrayOfArrays[startFlag] = inputArray.split(","); // bleDataMatrix;//[startFlag] = bleDataMatrix;//.split(",");
+                
+                document.getElementById("aArraysSpan").innerHTML = arrayOfArrays; // Showw array of arrays 
+                document.getElementById("currentSpan").innerHTML = arrayOfArrays[startFlag]; // Showw array of arrays 
+
+                // ===== Change langugue  ============
+                document.getElementById("languageSpan2").innerHTML = array[array.length-1];
+
+                // ====== Make componentsData object ======
+                var componentsData2 = [];
+                for (var i = 0; i < array.length-2; i++){
+                    componentsData2[i] = {Val_1: array[i*3], Val_2: array[i*3+1]};
+                }
+                
+                
+                // ==== Array Repleced ======
+                var arrayReplaced = [];
+                for (var i = 0; i < array.length; i++){
+                    arrayReplaced[i] = array[i].replace(".",",");
+                }
+                
+                // ====== Call Build table function ======
+                if (array[array.length-1] == "Alemán") {
+                    document.getElementById("languageSpanVal2").innerHTML = "Good day!";
+                    BuildTableTest(arrayReplaced,'dataTable2');
+                } else {
+                    document.getElementById("languageSpanVal2").innerHTML = "";
+                    //BuildTableTest(array,'dataTable2');
+                    if (startFlag == 0){
+                        //BuildTableTest(arrayOfArrays,'dataTable2');
+                        BuildTableHeaders('dataTable2');
+                    }
+                    else {
+                        BuildTableInsertRow(arrayOfArrays,'dataTable2');
+                        //BuildTableRowCells(arrayOfArrays,'dataTable2');
+                    }
+                    
+                }
+
+                startFlag++;
+
+                // === Build table headers function Definition  =====
+                function BuildTableHeaders(tableName){
+                    var table2 = document.getElementById(tableName);
+                    var newRow = ``;
+
+                    for (var j = 0; j < initialLength; j++){
+                            newRow = newRow.concat(`<th>Var${j}</th>`); //newRow.concat(
+                        }  
+                    table2.innerHTML += newRow;                      
+                }
+
+                // === Build insert row function Definition  =====
+                function BuildTableInsertRow(data,tableName){
+                    var table = document.getElementById(tableName);
+                    var row = table.insertRow(-1);
+                    //var cell1 = row.insertCell(0);
+                    //var cell2 = row.insertCell(1);
+
+                    let rows = table.rows;
+
+                    for (var i = 0; i < initialLength; i++){
+
+                    } 
+
+                    for (let index = 1; index < rows.length; index++) {
+                        let cells = rows[index].cells;
+                            for (let j = 0 ; j < cells.length; j++) {
+                                //table.rows[index].cells[j].innerText = (i+1)*j;    //console.log(cells[j].innerText);
+                            }
+                        }
+                    //row.insertCell(0).innerHTML = "NEW CELL " + cells.length;
+                    //cell1.innerHTML = "NEW CELL " + cells.length;
+                    //cell2.innerHTML = "NEW CELL2";
+
+                    document.getElementById("cellsLength").innerHTML = data.length;                        
+                }
+
+                
+                
+                // === Build table function Definition  =====
+                function BuildTableRowCells(data,tableName){
+                    // Access table by its ID
+                    let table = document.getElementById(tableName);
+                    // Access Rows and Cells, select rows and cells within a table
+                    let rows = table.rows;
+                    let firstRowCells = rows[0].cell;
+                    // Iterating over cells: Looping through cells to access their data
+                    for (let index = 1; index < rows.length; index++) {
+                        let cells = rows[index].cells;
+                            for (let j = 0 ; j < cells.length; j++) {
+                                table.rows[index].cells[j].innerText = (i+1)*j;    //console.log(cells[j].innerText);
+                            }
+                        }
+                    table.rows[startFlag-1].cells[1].innerText = "updated "+ startFlag;
+                }
+            }            
+            
+            
+        </script>    
+    </body>
+</html>
