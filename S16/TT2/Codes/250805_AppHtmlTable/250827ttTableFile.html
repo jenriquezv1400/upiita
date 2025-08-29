@@ -33,10 +33,12 @@
         <p >
             <span id="dateSpan" ></span>
             <input type="button" value="Copy Table" onClick="copytable('dataTable')">
-            Language: <span id="languageSpan" ></span> <br>      
+            Language: <span id="languageSpan" ></span>                                  <br>   
+            Concatenated String: <span id= "concatStringSpan" ></span>
+            Concatenated String: <span id= "concatStringSpan" ></span>                  <br>
+            Dates and Hours array: <span id= "dHoursArray" ></span>
         </p> 
         <p id="languageDemo"></p>
-        
 
         <table id="dataTable">
             <tr> 
@@ -48,10 +50,15 @@
             </tr> 
         </table>
 
+        <!-- ================================ -->
+        <!-- ============ Script ========= -->
+        <!-- ================================ -->
+
     
         <script>
             let concatString = "";
-            
+            let concatDate = "";
+
             var appInventorInput = window.AppInventor.getWebViewString();
             if (concatString == ""){
                 concatString = appInventorInput;
@@ -59,6 +66,8 @@
             else{
                 concatString = concatString.concat(",",appInventorInput);
             }
+
+            document.getElementById("concatStringSpan").innerHTML = concatString;
             
             // == Make data split array===
             const aInventorSplitArray = concatString.split(",");
@@ -69,7 +78,7 @@
                document.getElementById("languageDemo").innerHTML = "Good day!";
             }
 
-            // ==== Array Repleced ======
+            // ==== Repleced Array  ======
             var arrayReplaced = [];
 
             for (var i = 0; i < aInventorSplitArray.length; i++){
@@ -85,8 +94,22 @@
             let minutes =  d.getMinutes() ;
             let seconds =  d.getSeconds() ;
 
-            const dayConcact = year +"." + month + "."+ date;
+            const dayConcact = date + "." + month + "." + year;
             const hourConcact = hour + ":" +minutes + ":" + seconds
+
+            // ==== Concat Dates and Hours =====
+            
+            if (concatDate.length < ""){
+                concatDate = dayConcact+","+hourConcact;
+            }
+            else{
+                concatDate = concatDate + ",",dayConcact + "," + hourConcact;
+            }
+
+            // == Make date and hours split array===
+            const dateSplitArray = concatDate.split(",");
+
+            document.getElementById("dHoursArray").innerHTML = dateSplitArray;
 
             // === Show curren date and hour ===
             document.getElementById("dateSpan").innerHTML = year +"." + month + "."+ date + " " + hour + ":" +minutes + ":" + seconds;
@@ -95,9 +118,9 @@
             var componentsData = [];
             for (var i = 0; i < aInventorSplitArray.length/4; i++){
                 if (aInventorSplitArray[aInventorSplitArray.length-1] == "Alemán") {
-                    componentsData[i] = {day: dayConcact, hour: hourConcact, Val_1: arrayReplaced[i*4], Val_2: arrayReplaced[i*4+1], Val_3: arrayReplaced[i*4+2]}
+                    componentsData[i] = {day: dateSplitArray[i+2], hour: dateSplitArray[i*2+1], Val_1: arrayReplaced[i*4], Val_2: arrayReplaced[i*4+1], Val_3: arrayReplaced[i*4+2]}
                 }else{
-                    componentsData[i] = {day: dayConcact, hour: hourConcact, Val_1: aInventorSplitArray[i*4], Val_2: aInventorSplitArray[i*4+1], Val_3: aInventorSplitArray[i*4+2]}
+                    componentsData[i] = {day: dateSplitArray[i*2], hour: dateSplitArray[i*2+1], Val_1: aInventorSplitArray[i*4], Val_2: aInventorSplitArray[i*4+1], Val_3: aInventorSplitArray[i*4+2]}
                 }
             }
             
@@ -151,8 +174,9 @@
             Object: <span id="objectSpan" ></span> <br>
 
             Date: <span id="daySpan" ></span> <br>
-            Hour: <span id="hourSpan" ></span>
-            Date length: <span id= "datelength" ></span>
+            Hour: <span id="hourSpan" ></span> <br>
+            Date length: <span id= "datelength" ></span> <br>
+            Dates and Hours array: <span id= "datesHoursArray" ></span>
         </p>
 
         <!-- Define table -->
@@ -167,11 +191,15 @@
         </table>
 
         <!-- ================================ -->
-        <!-- ============ Test code script ========= -->
+        <!-- ============ Test code script ========= 
+        Remember data is stored in real aplication dosn't 
+        -->
+
         <!-- ================================ -->
 
         <script>
             let concatStringTest = "";
+            let concatDateTest = "";
             function myFunction() {
                 // ======= Get data and split ===
                 //1.2,2.3,3.4,Alemán
@@ -194,7 +222,7 @@
                 //var x = document.getElementById("lenguageSelect").value;
                 //document.getElementById("languageSpan2").innerHTML = x;
                 document.getElementById("languageSpan2").innerHTML = array[array.length-1];
-                // ==== Array Repleced ======
+                // ==== Repleced Array  ======
                 var arrayReplaced = [];
 
                 for (var i = 0; i < array.length; i++){
@@ -218,6 +246,19 @@
                 document.getElementById("daySpan").innerHTML = dayConcact ;
                 document.getElementById("hourSpan").innerHTML = hourConcact;
 
+                // ==== Concat Dates and Hours =====
+                
+                if (concatDateTest == ""){
+                    concatDateTest = dayConcact+","+hourConcact;
+                }
+                else{
+                    concatDateTest = concatDateTest + "," + dayConcact+ "," + hourConcact;
+                }
+                // == Make date and hours split array===
+                const dateSplitArray = concatDateTest.split(",");
+                document.getElementById("datesHoursArray").innerHTML = concatDateTest;
+                
+
                 // ====== Make componentsData object ======
 
                 document.getElementById("arrayLengthSpan").innerHTML = array.length/4;
@@ -225,9 +266,9 @@
                 var componentsData2 = [];
                 for (var i = 0; i < array.length/4; i++){
                     if (array[array.length-1] == "Alemán") {
-                        componentsData2[i] = {day: dayConcact, hour: hourConcact, Val_1: arrayReplaced[i*4], Val_2: arrayReplaced[i*4+1], Val_3: arrayReplaced[i*4+2]}
+                        componentsData2[i] = {day: dateSplitArray[i*2], hour: dateSplitArray[i*2+1], Val_1: arrayReplaced[i*4], Val_2: arrayReplaced[i*4+1], Val_3: arrayReplaced[i*4+2]}
                     }else{
-                        componentsData2[i] = {day: dayConcact, hour: hourConcact, Val_1: array[i*4], Val_2: array[i*4+1], Val_3: array[i*4+2]};
+                        componentsData2[i] = {day: dateSplitArray[i*2], hour: dateSplitArray[i*2+1], Val_1: array[i*4], Val_2: array[i*4+1], Val_3: array[i*4+2]};
                     } 
                 }
 
