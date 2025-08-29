@@ -43,7 +43,11 @@
                 <th>Val_2</th> 
             </tr> 
         </table>     
-    
+        
+        <!-- ================================ -->
+        <!-- ============ Script ========= -->
+        <!-- ================================ -->
+
         <script>
             // ===== Set date ============
             const d = new Date();
@@ -160,6 +164,7 @@
             var initialLength ;
             var startFlag = 0;
             let arrayOfArrays = [];
+            var arrayReplaced = [];
             const rowArray = [];
             function myFunction() {
                 // ======= Get data and split ===
@@ -188,13 +193,7 @@
                 if (startFlag == 0){
                     initialLength = concatString.split(",").length-2;                    
                 }
-                document.getElementById("initialLengthSpan").innerHTML = initialLength;
-
-                for (var i = 0; i < startFlag + 1; i++){
-                    for (var i = 0; i < startFlag + 1; i++){
-                        
-                    }
-                }
+                document.getElementById("initialLengthSpan").innerHTML = initialLength;              
 
                 arrayOfArrays[startFlag] = stringInputValue.split(","); // concatString;//[startFlag] = concatString;//.split(",");
                 
@@ -205,16 +204,21 @@
                 document.getElementById("languageSpan2").innerHTML = array[array.length-1];
 
                 // ==== Array Repleced ======
-                var arrayReplaced = [];
+                
                 /*
                 for (var i = 0; i < array.length; i++){
                     arrayReplaced[i] = array[i].replace(".",",");
                 }
-                */
-                for (var i = 0; i < arrayOfArrays.length; i++){
-                    arrayReplaced[i] = arrayOfArrays[i][0].replace(".",",");
-                }
                 
+                
+                */
+                var tempArray = [];
+                for (var j = 0; j < initialLength; j++){
+                    tempArray[j] = arrayOfArrays[startFlag][j].replace(".",",");
+                }
+
+                arrayReplaced[startFlag] = tempArray;
+
                 document.getElementById("arrayReplaced").innerHTML = arrayReplaced;
                 
                 
@@ -223,13 +227,11 @@
                 if (array[array.length-1] == "Alemán") {
                     document.getElementById("languageSpanVal2").innerHTML = "Good day!";
                     //BuildTableTest(arrayReplaced,'dataTable2');
-                    if (startFlag == 0){
-                        //BuildTableTest(arrayOfArrays,'dataTable2');
+                    if (startFlag == 0){                        
                         BuildTableHeaders('dataTable2');
                     }
                     else {
-                        BuildTableInsertRow(arrayOfArrays,'dataTable2');
-                        //BuildTableRowCells(arrayOfArrays,'dataTable2');
+                        BuildTableInsertRow(arrayReplaced,'dataTable2');
                     }
                 } else {
                     document.getElementById("languageSpanVal2").innerHTML = "";
