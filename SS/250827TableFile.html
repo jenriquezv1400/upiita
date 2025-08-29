@@ -123,15 +123,18 @@
             
         </script>
 
-        <!-- ============ Test code =========-->
+        <!-- ================================ -->
+        <!-- ============ Test code ========= -->
+        <!-- ================================ -->
+         
         <!-- Input Data -->
-        <label for="fname">Array:</label>
-        <input type="text" id="arrayInput" name="fname">
+        <label for="stringInputLabel">Input String: </label>
+        <input type="text" id="stringInput" name="stringInput">
         <button type="button" onclick="myFunction()">Up date</button>
 
         <!-- Show data -->
         <p>
-            StringBleDataMatrix: <span id="bleDataMatrixSpan" ></span>    <br>
+            StringBleDataMatrix: <span id="concatStringSpan" ></span>    <br>
             Initial length: <span id="initialLengthSpan" ></span>    <br>
             Array of arrays: <span id="aArraysSpan" ></span>            <br>         
             Current array: <span id="currentSpan" ></span>            <br>         
@@ -140,7 +143,6 @@
             Array replaced: <span id="arrayReplaced" ></span>            <br>
             Rows Length: <span id="rowsLengthSpan" ></span>   <br>                
             Cells Length: <span id="cellsLength" ></span>                   
-
         </p>       
 
         <!-- Define table -->
@@ -149,29 +151,32 @@
         
         </table>
 
+        <!-- ================================ -->
+        <!-- ============ Test code script ========= -->
+        <!-- ================================ -->
+
         <script>
-            let bleDataMatrix = "";
+            let concatString = "";
             var initialLength ;
             var startFlag = 0;
             let arrayOfArrays = [];
             const rowArray = [];
             function myFunction() {
                 // ======= Get data and split ===
-                //"1.0,2.0,3.0,4,5,6,7,8,9.0,10.0,11.0,0000,Alemán"
-                
-                var inputArray = document.getElementById("arrayInput").value;
-                if (bleDataMatrix == ""){
-                    bleDataMatrix = inputArray;
+                //"1.0,2.0,3.0,4,5,6,7,8,9.0,10.0,11.0,0000,Alemán"   
+                var stringInputValue = document.getElementById("stringInput").value;
+                if (concatString == ""){
+                    concatString = stringInputValue;
                 }
                 else{
-                    bleDataMatrix = bleDataMatrix.concat(",",inputArray);
+                    concatString = concatString.concat(",",stringInputValue);
                 }
                 
                 // === Show ble data concactenated string =======
-                document.getElementById("bleDataMatrixSpan").innerHTML = bleDataMatrix;
+                document.getElementById("concatStringSpan").innerHTML = concatString;
 
                 // == Make data split array===
-                const array = bleDataMatrix.split(",");
+                const array = concatString.split(",");
 
                 // ====== Make componentsData object ======
                 var componentsData2 = [];
@@ -181,7 +186,7 @@
                 
                 // === Make arrya of arrays ====
                 if (startFlag == 0){
-                    initialLength = bleDataMatrix.split(",").length-2;                    
+                    initialLength = concatString.split(",").length-2;                    
                 }
                 document.getElementById("initialLengthSpan").innerHTML = initialLength;
 
@@ -191,7 +196,7 @@
                     }
                 }
 
-                arrayOfArrays[startFlag] = inputArray.split(","); // bleDataMatrix;//[startFlag] = bleDataMatrix;//.split(",");
+                arrayOfArrays[startFlag] = stringInputValue.split(","); // concatString;//[startFlag] = concatString;//.split(",");
                 
                 document.getElementById("aArraysSpan").innerHTML = arrayOfArrays; // Showw array of arrays 
                 document.getElementById("currentSpan").innerHTML = arrayOfArrays[startFlag]; // Showw array of arrays 
@@ -207,7 +212,7 @@
                 }
                 */
                 for (var i = 0; i < arrayOfArrays.length; i++){
-                    arrayReplaced[i] = arrayOfArrays[i].replace(".",",");
+                    arrayReplaced[i] = arrayOfArrays[i][0].replace(".",",");
                 }
                 
                 document.getElementById("arrayReplaced").innerHTML = arrayReplaced;
