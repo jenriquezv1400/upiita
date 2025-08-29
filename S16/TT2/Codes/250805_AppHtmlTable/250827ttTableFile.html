@@ -50,6 +50,32 @@
 
     
         <script>
+            let concatString = "";
+            
+            var appInventorInput = window.AppInventor.getWebViewString();
+            if (concatString == ""){
+                concatString = appInventorInput;
+            }
+            else{
+                concatString = concatString.concat(",",appInventorInput);
+            }
+            
+            // == Make data split array===
+            const aInventorSplitArray = concatString.split(",");
+            
+            // ===== Change langugue  ============
+            document.getElementById("languageSpan").innerHTML = aInventorSplitArray[aInventorSplitArray.length-1];
+            if (aInventorSplitArray[aInventorSplitArray.length-1] == "Alemán") {
+               document.getElementById("languageDemo").innerHTML = "Good day!";
+            }
+
+            // ==== Array Repleced ======
+            var arrayReplaced = [];
+
+            for (var i = 0; i < aInventorSplitArray.length; i++){
+                arrayReplaced[i] = aInventorSplitArray[i].replace(".",",");
+            }
+
             // ===== Set date ============
             const d = new Date();
             let year =  d.getFullYear();
@@ -64,22 +90,6 @@
 
             // === Show curren date and hour ===
             document.getElementById("dateSpan").innerHTML = year +"." + month + "."+ date + " " + hour + ":" +minutes + ":" + seconds;
-
-            // ===== Get data App invento and split ============
-            var appInventorInput = window.AppInventor.getWebViewString();
-            const aInventorSplitArray = appInventorInput.split(",");
-            
-            // ===== Change langugue  ============
-            document.getElementById("languageSpan").innerHTML = aInventorSplitArray[aInventorSplitArray.length-1];
-            if (aInventorSplitArray[aInventorSplitArray.length-1] == "Alemán") {
-               document.getElementById("languageDemo").innerHTML = "Good day!";
-            }
-
-            var arrayReplaced = [];
-
-            for (var i = 0; i < aInventorSplitArray.length; i++){
-                arrayReplaced[i] = aInventorSplitArray[i].replace(".",",");
-            }
 
             // ====== Make componentsData object ======
             var componentsData = [];
@@ -98,16 +108,20 @@
                 var table = document.getElementById('dataTable');
 
                 for (var i = 0; i < data.length; i++){
-                    var row = `<tr>
-                        <td>${data[i].day}</td>
-                        <td>${data[i].hour}</td>  
-                        <td>${data[i].Val_1}</td>
-                        <td>${data[i].Val_2}</td>
-                        <td>${data[i].Val_3}</td>
-					  </tr>`
-                    table.innerHTML += row
-                }               
-            }
+                        var row = 
+                        `<tr>
+                            <td>${data[i].day}</td>
+                            <td>${data[i].hour}</td>    
+                            <td>${data[i].Val_1}</td>
+                            <td>${data[i].Val_2}</td>
+                            <td>${data[i].Val_3}</td>
+                        </tr>`;                                            
+                        table.innerHTML += row;
+                    }
+                
+                }
+                
+            
 
             // ====== Copy table function ======
             function copytable(el) {
@@ -138,6 +152,7 @@
 
             Date: <span id="daySpan" ></span> <br>
             Hour: <span id="hourSpan" ></span>
+            Date length: <span id= "datelength" ></span>
         </p>
 
         <!-- Define table -->
@@ -156,24 +171,24 @@
         <!-- ================================ -->
 
         <script>
-            let concatString = "";
+            let concatStringTest = "";
             function myFunction() {
                 // ======= Get data and split ===
                 //1.2,2.3,3.4,Alemán
                 var stringInputValue = document.getElementById("stringInput").value;
                 
-                if (concatString == ""){
-                    concatString = stringInputValue;
+                if (concatStringTest == ""){
+                    concatStringTest = stringInputValue;
                 }
                 else{
-                    concatString = concatString.concat(",",stringInputValue);
+                    concatStringTest = concatStringTest.concat(",",stringInputValue);
                 }
 
                 // === Show ble data concactenated string =======
-                document.getElementById("concatStringSpan").innerHTML = concatString;
+                document.getElementById("concatStringSpan").innerHTML = concatStringTest;
 
                 // == Make data split array===
-                const array = concatString.split(",");
+                const array = concatStringTest.split(",");
 
                 // ===== Change langugue  ============
                 //var x = document.getElementById("lenguageSelect").value;
@@ -216,23 +231,25 @@
                     } 
                 }
 
-                document.getElementById("objectSpan").innerHTML = componentsData2[array.length/4-1].day ;
+                document.getElementById("objectSpan").innerHTML = componentsData2[array.length/4-1].day + " "+componentsData2[array.length/4-1].hour;
                 // ====== Call Build table function ======
-                //BuildTable2(componentsData2);
+                BuildTable2(componentsData2);
                 // === Build table function Definition  =====
                 function BuildTable2(data){
                     var table2 = document.getElementById('dataTable2');
-
+                    document.getElementById("datelength").innerHTML = data.length;
+                    
                     for (var i = 0; i < data.length; i++){
-                        var row2 = `<tr>
+                        var row2 = 
+                        `<tr>
                             <td>${data[i].day}</td>
                             <td>${data[i].hour}</td>    
                             <td>${data[i].Val_1}</td>
                             <td>${data[i].Val_2}</td>
                             <td>${data[i].Val_3}</td>
-                        </tr>`
-                        table2.innerHTML += row2
+                        </tr>`;                                            
                     } 
+                    table2.innerHTML += row2;
                 }
             }
         </script>
