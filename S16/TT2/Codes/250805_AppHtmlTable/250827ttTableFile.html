@@ -31,7 +31,7 @@
 
     <body > 
         <p >
-            <span id="date1" ></span>
+            <span id="dateSpan" ></span>
             <input type="button" value="Copy Table" onClick="copytable('dataTable')">
             Language: <span id="languageSpan" ></span> <br>      
         </p> 
@@ -40,8 +40,11 @@
 
         <table id="dataTable">
             <tr> 
-                <th>Val_1</th> 
-                <th>Val_2</th> 
+                <th> Date</th>
+                <th> Hour</th>
+                <th> mass</th>
+                <th> temp</th>
+                <th> humidity</th>
             </tr> 
         </table>
 
@@ -54,46 +57,53 @@
             let date =  d.getDate();
             let hour =  d.getHours();
             let minutes =  d.getMinutes() ;
-            
-            document.getElementById("date1").innerHTML = year +"." + month + "."+ date + " " + hour +":" +minutes;
+            let seconds =  d.getSeconds() ;
+
+            const dayConcact = year +"." + month + "."+ date;
+            const hourConcact = hour + ":" +minutes + ":" + seconds
+
+            // === Show curren date and hour ===
+            document.getElementById("dateSpan").innerHTML = year +"." + month + "."+ date + " " + hour + ":" +minutes + ":" + seconds;
 
             // ===== Get data App invento and split ============
             var appInventorInput = window.AppInventor.getWebViewString();
-            const result = appInventorInput.split(",");
+            const aInventorSplitArray = appInventorInput.split(",");
             
             // ===== Change langugue  ============
-            document.getElementById("languageSpan").innerHTML = result[result.length-1];
-            if (result[result.length-1] == "Alemán") {
+            document.getElementById("languageSpan").innerHTML = aInventorSplitArray[aInventorSplitArray.length-1];
+            if (aInventorSplitArray[aInventorSplitArray.length-1] == "Alemán") {
                document.getElementById("languageDemo").innerHTML = "Good day!";
             }
 
             var arrayReplaced = [];
 
-            for (var i = 0; i < result.length; i++){
-                arrayReplaced[i] = result[i].replace(".",",");
+            for (var i = 0; i < aInventorSplitArray.length; i++){
+                arrayReplaced[i] = aInventorSplitArray[i].replace(".",",");
             }
 
             // ====== Make componentsData object ======
             var componentsData = [];
-            for (var i = 0; i < result.length/3; i++){
-                if (result[result.length-1] == "Alemán") {
-                    componentsData[i] = {Val_1: arrayReplaced[i*3], Val_2: arrayReplaced[i*3+1]}
+            for (var i = 0; i < aInventorSplitArray.length/4; i++){
+                if (aInventorSplitArray[aInventorSplitArray.length-1] == "Alemán") {
+                    componentsData[i] = {day: dayConcact, hour: hourConcact, Val_1: arrayReplaced[i*4], Val_2: arrayReplaced[i*4+1], Val_3: arrayReplaced[i*4+2]}
                 }else{
-                    componentsData[i] = {Val_1: result[i*3], Val_2: result[i*3+1]}
+                    componentsData[i] = {day: dayConcact, hour: hourConcact, Val_1: aInventorSplitArray[i*4], Val_2: aInventorSplitArray[i*4+1], Val_3: aInventorSplitArray[i*4+2]}
                 }
-                
             }
             
-            // ====== Build table function ======
+            // ====== Call Build table function ======
             BuildTable(componentsData);
-
+            // === Bould table function Definition =====
             function BuildTable(data){
                 var table = document.getElementById('dataTable');
 
                 for (var i = 0; i < data.length; i++){
                     var row = `<tr>
-							<td>${data[i].Val_1}</td>
-							<td>${data[i].Val_2}</td>
+                        <td>${data[i].day}</td>
+                        <td>${data[i].hour}</td>  
+                        <td>${data[i].Val_1}</td>
+                        <td>${data[i].Val_2}</td>
+                        <td>${data[i].Val_3}</td>
 					  </tr>`
                     table.innerHTML += row
                 }               
@@ -106,95 +116,124 @@
                 range.selectNode(urlField)
                 window.getSelection().addRange(range)
                 document.execCommand('copy')
-            }
-            
-            
+            }            
         </script>
 
-        <!-- ============ Test code =========-->
-        <label for="fname">First name:</label>
-        <input type="text" id="fname" name="fname">
+        <!-- ================================ -->
+        <!-- ============ Test code ========= -->
+        <!-- ================================ -->
 
-        <!-- Select languague 
-        <select id="lenguageSelect">
-            <option value="Alemán">Alemán</option>
-            <option value="Español-Inglés">Español-Inglés</option>
-        </select>
-        -->
-        <button type="button" onclick="myFunction()">Try it</button>
+        <!-- Input Data -->
+        <label for="stringInputLabel">Input String: </label>
+        <input type="text" id="stringInput" name="stringInput">
+        <button type="button" onclick="myFunction()">Up date</button>
 
         <!-- Show data -->
         <p>
-            Language2: <span id="languageSpan2" ></span> <br>
-            
-            <!--<span id="languageSpanVal2" ></span> <br>--> 
-            <span id="componentsData2Sapan" ></span> <br>
-            <span id="replaceSpan" ></span> <br>
+            Language: <span id="languageSpan2" ></span> <br>
+            StringBleDataMatrix: <span id="concatStringSpan" ></span> <br>
+            Array Length: <span id="arrayLengthSpan" ></span> <br>
+            ArrayReplaced: <span id="replaceSpan" ></span> <br>
+            Object: <span id="objectSpan" ></span> <br>
+
+            Date: <span id="daySpan" ></span> <br>
+            Hour: <span id="hourSpan" ></span>
         </p>
 
         <!-- Define table -->
         <table id="dataTable2"> 
             <tr>
-                <th> var_1</th>
-                <th> var_2</th>
+                <th> Date</th>
+                <th> Hour</th>
+                <th> mass</th>
+                <th> temp</th>
+                <th> humidity</th>
             </tr>
         </table>
 
+        <!-- ================================ -->
+        <!-- ============ Test code script ========= -->
+        <!-- ================================ -->
 
         <script>
+            let concatString = "";
             function myFunction() {
                 // ======= Get data and split ===
-                //1.2,2.3,Alemán
-                var inputArray = document.getElementById("fname").value;
-                document.getElementById("componentsData2Sapan").innerHTML = inputArray;
-                const array = inputArray.split(",");
+                //1.2,2.3,3.4,Alemán
+                var stringInputValue = document.getElementById("stringInput").value;
+                
+                if (concatString == ""){
+                    concatString = stringInputValue;
+                }
+                else{
+                    concatString = concatString.concat(",",stringInputValue);
+                }
+
+                // === Show ble data concactenated string =======
+                document.getElementById("concatStringSpan").innerHTML = concatString;
+
+                // == Make data split array===
+                const array = concatString.split(",");
 
                 // ===== Change langugue  ============
                 //var x = document.getElementById("lenguageSelect").value;
                 //document.getElementById("languageSpan2").innerHTML = x;
                 document.getElementById("languageSpan2").innerHTML = array[array.length-1];
-                /*
-                if (array[array.length-1] == "Alemán") {
-                    document.getElementById("languageSpanVal2").innerHTML = "Good day!";
-                }
-                else{
-                    document.getElementById("languageSpanVal2").innerHTML = "";
-                }
-                */
+                // ==== Array Repleced ======
                 var arrayReplaced = [];
 
                 for (var i = 0; i < array.length; i++){
                     arrayReplaced[i] = array[i].replace(".",",");
                 }
                 
-                document.getElementById("replaceSpan").innerHTML = arrayReplaced[0];
+                document.getElementById("replaceSpan").innerHTML = arrayReplaced;
+                
+                // ===== Set date ============
+                const d = new Date();
+                let year =  d.getFullYear();
+                let month = d.getMonth() + 1;
+                let date =  d.getDate();
+                let hour =  d.getHours();
+                let minutes =  d.getMinutes();
+                let seconds =  d.getSeconds();
+                
+                const dayConcact = year +"." + month + "."+ date;
+                const hourConcact = hour + ":" +minutes + ":" + seconds
+
+                document.getElementById("daySpan").innerHTML = dayConcact ;
+                document.getElementById("hourSpan").innerHTML = hourConcact;
 
                 // ====== Make componentsData object ======
+
+                document.getElementById("arrayLengthSpan").innerHTML = array.length/4;
+                
                 var componentsData2 = [];
-                for (var i = 0; i < array.length/3; i++){
+                for (var i = 0; i < array.length/4; i++){
                     if (array[array.length-1] == "Alemán") {
-                        componentsData2[i] = {Val_1: arrayReplaced[i*3], Val_2: arrayReplaced[i*3+1]}
+                        componentsData2[i] = {day: dayConcact, hour: hourConcact, Val_1: arrayReplaced[i*4], Val_2: arrayReplaced[i*4+1], Val_3: arrayReplaced[i*4+2]}
                     }else{
-                        componentsData2[i] = {Val_1: array[i*3], Val_2: array[i*3+1]};
+                        componentsData2[i] = {day: dayConcact, hour: hourConcact, Val_1: array[i*4], Val_2: array[i*4+1], Val_3: array[i*4+2]};
                     } 
                 }
 
-                // ====== Build table function ======
-                BuildTable2(componentsData2);
-
+                document.getElementById("objectSpan").innerHTML = componentsData2[array.length/4-1].day ;
+                // ====== Call Build table function ======
+                //BuildTable2(componentsData2);
+                // === Build table function Definition  =====
                 function BuildTable2(data){
                     var table2 = document.getElementById('dataTable2');
 
                     for (var i = 0; i < data.length; i++){
                         var row2 = `<tr>
-                                <td>${data[i].Val_1}</td>
-                                <td>${data[i].Val_2}</td>
+                            <td>${data[i].day}</td>
+                            <td>${data[i].hour}</td>    
+                            <td>${data[i].Val_1}</td>
+                            <td>${data[i].Val_2}</td>
+                            <td>${data[i].Val_3}</td>
                         </tr>`
                         table2.innerHTML += row2
                     } 
                 }
-
-                
             }
         </script>
     </body>
