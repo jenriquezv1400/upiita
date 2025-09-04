@@ -34,8 +34,8 @@
             <span id="dateSpan" ></span>
             <input type="button" value="Copy Table" onClick="copytable('dataTable')">
             Language: <span id="languageSpan" ></span>                                  <br>   
-            Concatenated String: <span id= "concatStringSpan" ></span>
-            Concatenated String: <span id= "concatStringSpan" ></span>                  <br>
+            Concatenated String: <span id= "concatSpanString" ></span>  
+            Concatenated Date String: <span id= "concatSpanDateString" ></span>                  <br>
             Dates and Hours array: <span id= "dHoursArray" ></span>
         </p> 
         <p id="languageDemo"></p>
@@ -56,21 +56,56 @@
 
     
         <script>
-            let concatString = "";
-            let concatDate = "";
-
+            let concatString = ""; // delete this <------------
+            let concatDateString = ""; 
+            // ==== Get app inventor data ======
             var appInventorInput = window.AppInventor.getWebViewString();
+
+            // ===== Set date ============
+            const d = new Date();
+            let year =  d.getFullYear();
+            let month = d.getMonth() + 1;
+            let date =  d.getDate();
+            let hour =  d.getHours();
+            let minutes =  d.getMinutes() ;
+            let seconds =  d.getSeconds() ;
+
+            const dayConcact = date + "." + month + "." + year;
+            const hourConcact = hour + ":" +minutes + ":" + seconds;
+
+            // ==== Concat string and Dates and Hours =====
+
             if (concatString == ""){
                 concatString = appInventorInput;
+                concatDateString = dayConcact + "," + hourConcact;
             }
             else{
                 concatString = concatString.concat(",",appInventorInput);
+                concatDateString = concatDateString.concat(",",appInventorInput);//",",dayConcact,",",hourConcact);
             }
+        
+            /*
+            if (concatDateString == ""){
+                
+            }
+            else{
+                
+            }
+            */
 
-            document.getElementById("concatStringSpan").innerHTML = concatString;
+            // === Show curren date and hour concatenated date and string data ===
+            document.getElementById("dateSpan").innerHTML = year +"." + month + "."+ date + " " + hour + ":" +minutes + ":" + seconds
+            document.getElementById("concatSpanDateString").innerHTML = concatDateString;
+            document.getElementById("concatSpanString").innerHTML = appInventorInput;
             
             // == Make data split array===
-            const aInventorSplitArray = concatString.split(",");
+            const aInventorSplitArray = appInventorInput.split(",");
+
+
+            // == Make date and hours split array===
+            const dateSplitArray = concatDateString.split(",");
+
+            document.getElementById("dHoursArray").innerHTML = dateSplitArray;
             
             // ===== Change langugue  ============
             document.getElementById("languageSpan").innerHTML = aInventorSplitArray[aInventorSplitArray.length-1];
@@ -85,34 +120,6 @@
                 arrayReplaced[i] = aInventorSplitArray[i].replace(".",",");
             }
 
-            // ===== Set date ============
-            const d = new Date();
-            let year =  d.getFullYear();
-            let month = d.getMonth() + 1;
-            let date =  d.getDate();
-            let hour =  d.getHours();
-            let minutes =  d.getMinutes() ;
-            let seconds =  d.getSeconds() ;
-
-            const dayConcact = date + "." + month + "." + year;
-            const hourConcact = hour + ":" +minutes + ":" + seconds
-
-            // ==== Concat Dates and Hours =====
-            
-            if (concatDate.length < ""){
-                concatDate = dayConcact+","+hourConcact;
-            }
-            else{
-                concatDate = concatDate + ",",dayConcact + "," + hourConcact;
-            }
-
-            // == Make date and hours split array===
-            const dateSplitArray = concatDate.split(",");
-
-            document.getElementById("dHoursArray").innerHTML = dateSplitArray;
-
-            // === Show curren date and hour ===
-            document.getElementById("dateSpan").innerHTML = year +"." + month + "."+ date + " " + hour + ":" +minutes + ":" + seconds;
 
             // ====== Make componentsData object ======
             var componentsData = [];
@@ -141,10 +148,7 @@
                         </tr>`;                                            
                         table.innerHTML += row;
                     }
-                
                 }
-                
-            
 
             // ====== Copy table function ======
             function copytable(el) {
@@ -168,7 +172,7 @@
         <!-- Show data -->
         <p>
             Language: <span id="languageSpan2" ></span> <br>
-            StringBleDataMatrix: <span id="concatStringSpan" ></span> <br>
+            StringBleDataMatrix: <span id="concatTestStringSpan" ></span> <br>
             Array Length: <span id="arrayLengthSpan" ></span> <br>
             ArrayReplaced: <span id="replaceSpan" ></span> <br>
             Object: <span id="objectSpan" ></span> <br>
@@ -198,25 +202,25 @@
         <!-- ================================ -->
 
         <script>
-            let concatStringTest = "";
-            let concatDateTest = "";
+            let concatTestString = "";
+            let concatTestDate = "";
             function myFunction() {
                 // ======= Get data and split ===
                 //1.2,2.3,3.4,Alemán
                 var stringInputValue = document.getElementById("stringInput").value;
                 
-                if (concatStringTest == ""){
-                    concatStringTest = stringInputValue;
+                if (concatTestString == ""){
+                    concatTestString = stringInputValue;
                 }
                 else{
-                    concatStringTest = concatStringTest.concat(",",stringInputValue);
+                    concatTestString = concatTestString.concat(",",stringInputValue);
                 }
 
                 // === Show ble data concactenated string =======
-                document.getElementById("concatStringSpan").innerHTML = concatStringTest;
+                document.getElementById("concatTestStringSpan").innerHTML = concatTestString;
 
                 // == Make data split array===
-                const array = concatStringTest.split(",");
+                const array = concatTestString.split(",");
 
                 // ===== Change langugue  ============
                 //var x = document.getElementById("lenguageSelect").value;
@@ -248,15 +252,15 @@
 
                 // ==== Concat Dates and Hours =====
                 
-                if (concatDateTest == ""){
-                    concatDateTest = dayConcact+","+hourConcact;
+                if (concatTestDate == ""){
+                    concatTestDate = dayConcact+","+hourConcact;
                 }
                 else{
-                    concatDateTest = concatDateTest + "," + dayConcact+ "," + hourConcact;
+                    concatTestDate = concatTestDate + "," + dayConcact+ "," + hourConcact;
                 }
                 // == Make date and hours split array===
-                const dateSplitArray = concatDateTest.split(",");
-                document.getElementById("datesHoursArray").innerHTML = concatDateTest;
+                const dateSplitArray = concatTestDate.split(",");
+                document.getElementById("datesHoursArray").innerHTML = concatTestDate;
                 
 
                 // ====== Make componentsData object ======
