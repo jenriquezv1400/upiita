@@ -35,7 +35,11 @@
             <input type="button" value="Copy Table" onClick="copytable('dataTable')">
             Language: <span id="languageSpan" ></span> <br>
         </p> 
-        <p id="languageDemo"></p>   
+        <p>
+            <span id="languageDemo" ></span> <br>
+            Array number: <span id="languageSpan" ></span> <br>
+        </p>   
+
 
         <table id="dataTable">
             
@@ -48,6 +52,7 @@
         <script>
             var arrayReplaced = [];
             var arrayReplacedTemp = [];
+            var arrayNumbers = 0;
 
             // ===== Set date ============
             const d = new Date();
@@ -79,6 +84,12 @@
             //arrayReplaced = arrayReplacedTemp; //arrayReplaced[startFlag] = arrayReplacedTemp;                                
 
             // ====== Call Build table function ======
+            for (var i = 0; i < arrayReplaced.length - 1; i++){
+                if(){
+                    arrayNumbers++;
+                }                    
+            }
+
             if (aInventorSplitArray[aInventorSplitArray.length-1] == "Alemán") {
                 document.getElementById("languageDemo").innerHTML = "Good day!";
                 BuildTable3(arrayReplaced,'dataTable');
