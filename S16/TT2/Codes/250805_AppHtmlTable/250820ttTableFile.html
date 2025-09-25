@@ -42,7 +42,6 @@
             <tr> 
                 <th>Val_1</th> 
                 <th>Val_2</th> 
-                <th>Val_2</th> 
             </tr> 
         </table>
 
@@ -76,11 +75,11 @@
 
             // ====== Make componentsData object ======
             var componentsData = [];
-            for (var i = 0; i < result.length/4; i++){
+            for (var i = 0; i < result.length/3; i++){
                 if (result[result.length-1] == "Alemán") {
-                    componentsData[i] = {Val_1: arrayReplaced[i*4], Val_2: arrayReplaced[i*4+1], Val_2: arrayReplaced[i*4+2]}
+                    componentsData[i] = {Val_1: arrayReplaced[i*3], Val_2: arrayReplaced[i*3+1]}
                 }else{
-                    componentsData[i] = {Val_1: result[i*4], Val_2: result[i*4+1], Val_3: result[i*4+2]}
+                    componentsData[i] = {Val_1: result[i*3], Val_2: result[i*3+1]}
                 }
                 
             }
@@ -95,7 +94,6 @@
                     var row = `<tr>
 							<td>${data[i].Val_1}</td>
 							<td>${data[i].Val_2}</td>
-                            <td>${data[i].Val_3}</td>
 					  </tr>`
                     table.innerHTML += row
                 }               
@@ -139,7 +137,6 @@
             <tr>
                 <th> var_1</th>
                 <th> var_2</th>
-                <th> var_3</th>
             </tr>
         </table>
 
@@ -174,11 +171,11 @@
 
                 // ====== Make componentsData object ======
                 var componentsData2 = [];
-                for (var i = 0; i < array.length/4; i++){
+                for (var i = 0; i < array.length/3; i++){
                     if (array[array.length-1] == "Alemán") {
-                        componentsData2[i] = {Val_1: arrayReplaced[i*4], Val_2: arrayReplaced[i*4+1], Val_3: arrayReplaced[i*4+2]}
+                        componentsData2[i] = {Val_1: arrayReplaced[i*3], Val_2: arrayReplaced[i*3+1]}
                     }else{
-                        componentsData2[i] = {Val_1: array[i*4], Val_2: array[i*4+1], Val_3: array[i*4+2]};
+                        componentsData2[i] = {Val_1: array[i*3], Val_2: array[i*3+1]};
                     } 
                 }
 
@@ -192,7 +189,6 @@
                         var row2 = `<tr>
                                 <td>${data[i].Val_1}</td>
                                 <td>${data[i].Val_2}</td>
-                                <td>${data[i].Val_3}</td>
                         </tr>`
                         table2.innerHTML += row2
                     } 

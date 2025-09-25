@@ -30,23 +30,25 @@
     </style>
 
     <body > 
+        <input type="button" value="Copy Table" onClick="copytable('dataTable')">
+        <!--
         <p >
             <span id="dateSpan" ></span>
-            <input type="button" value="Copy Table" onClick="copytable('dataTable')">
+            
             Language: <span id="languageSpan" ></span>                                  <br>   
             Concatenated String: <span id= "concatSpanString" ></span>  
             Concatenated Date String: <span id= "concatSpanDateString" ></span>                  <br>
             Dates and Hours array: <span id= "dHoursArray" ></span>
         </p> 
         <p id="languageDemo"></p>
-
+        -->
         <table id="dataTable">
             <tr> 
                 <th> Date</th>
                 <th> Hour</th>
-                <th> mass</th>
-                <th> temp</th>
-                <th> humidity</th>
+                <th> mass [g]</th>
+                <th> temp [ºC]</th>
+                <th> humidity [%]</th>
             </tr> 
         </table>
 
@@ -56,7 +58,7 @@
 
     
         <script>
-            let concatString = ""; // delete this <------------
+            
             let concatDateString = ""; 
             // ==== Get app inventor data ======
             var appInventorInput = window.AppInventor.getWebViewString();
@@ -74,15 +76,9 @@
             const hourConcact = hour + ":" +minutes + ":" + seconds;
 
             // ==== Concat string and Dates and Hours =====
-
-            if (concatString == ""){
-                concatString = appInventorInput;
-                concatDateString = dayConcact + "," + hourConcact;
-            }
-            else{
-                concatString = concatString.concat(",",appInventorInput);
-                concatDateString = concatDateString.concat(",",appInventorInput);//",",dayConcact,",",hourConcact);
-            }
+            concatDateString = dayConcact + "," + hourConcact;
+            //concatDateString = concatDateString.concat(",",appInventorInput);//",",dayConcact,",",hourConcact);
+            
         
             /*
             if (concatDateString == ""){
@@ -93,10 +89,7 @@
             }
             */
 
-            // === Show curren date and hour concatenated date and string data ===
-            document.getElementById("dateSpan").innerHTML = year +"." + month + "."+ date + " " + hour + ":" +minutes + ":" + seconds
-            document.getElementById("concatSpanDateString").innerHTML = concatDateString;
-            document.getElementById("concatSpanString").innerHTML = appInventorInput;
+            
             
             // == Make data split array===
             const aInventorSplitArray = appInventorInput.split(",");
@@ -105,29 +98,43 @@
             // == Make date and hours split array===
             const dateSplitArray = concatDateString.split(",");
 
-            document.getElementById("dHoursArray").innerHTML = dateSplitArray;
+            
             
             // ===== Change langugue  ============
+            
+            // === Show curren date and hour concatenated date and string data ===
+            /*
+            document.getElementById("dateSpan").innerHTML = year +"." + month + "."+ date + " " + hour + ":" +minutes + ":" + seconds
+            document.getElementById("concatSpanDateString").innerHTML = concatDateString;
+            document.getElementById("concatSpanString").innerHTML = appInventorInput;
+            document.getElementById("dHoursArray").innerHTML = dateSplitArray;
             document.getElementById("languageSpan").innerHTML = aInventorSplitArray[aInventorSplitArray.length-1];
             if (aInventorSplitArray[aInventorSplitArray.length-1] == "Alemán") {
                document.getElementById("languageDemo").innerHTML = "Good day!";
             }
+            */
 
             // ==== Repleced Array  ======
             var arrayReplaced = [];
 
             for (var i = 0; i < aInventorSplitArray.length; i++){
-                arrayReplaced[i] = aInventorSplitArray[i].replace(".",",");
+                if (i % 6 == 0){
+                    arrayReplaced[i] = aInventorSplitArray[i];
+                }
+                // 0,6,12,18
+                else{
+                    arrayReplaced[i] = aInventorSplitArray[i].replace(".",",");
+                }
             }
 
 
             // ====== Make componentsData object ======
             var componentsData = [];
-            for (var i = 0; i < aInventorSplitArray.length/4; i++){
+            for (var i = 0; i < aInventorSplitArray.length/6; i++){
                 if (aInventorSplitArray[aInventorSplitArray.length-1] == "Alemán") {
-                    componentsData[i] = {day: dateSplitArray[i+2], hour: dateSplitArray[i*2+1], Val_1: arrayReplaced[i*4], Val_2: arrayReplaced[i*4+1], Val_3: arrayReplaced[i*4+2]}
+                    componentsData[i] = {day: arrayReplaced[i*6], hour: arrayReplaced[i*6+1], Val_1: arrayReplaced[i*6+2], Val_2: arrayReplaced[i*6+3], Val_3: arrayReplaced[i*6+4]}
                 }else{
-                    componentsData[i] = {day: dateSplitArray[i*2], hour: dateSplitArray[i*2+1], Val_1: aInventorSplitArray[i*4], Val_2: aInventorSplitArray[i*4+1], Val_3: aInventorSplitArray[i*4+2]}
+                    componentsData[i] = {day: aInventorSplitArray[i*6], hour: aInventorSplitArray[i*6+1], Val_1: aInventorSplitArray[i*6+2], Val_2: aInventorSplitArray[i*6+3], Val_3: aInventorSplitArray[i*6+4]}
                 }
             }
             
@@ -164,12 +171,13 @@
         <!-- ============ Test code ========= -->
         <!-- ================================ -->
 
-        <!-- Input Data -->
+        <!-- Input Data --> <!-- Show data --> <!-- Define table -->
+        <!--
         <label for="stringInputLabel">Input String: </label>
         <input type="text" id="stringInput" name="stringInput">
         <button type="button" onclick="myFunction()">Up date</button>
 
-        <!-- Show data -->
+        
         <p>
             Language: <span id="languageSpan2" ></span> <br>
             StringBleDataMatrix: <span id="concatTestStringSpan" ></span> <br>
@@ -183,16 +191,17 @@
             Dates and Hours array: <span id= "datesHoursArray" ></span>
         </p>
 
-        <!-- Define table -->
+        
         <table id="dataTable2"> 
             <tr>
                 <th> Date</th>
                 <th> Hour</th>
-                <th> mass</th>
-                <th> temp</th>
-                <th> humidity</th>
+                <th> mass [g]</th>
+                <th> temp [ºC]</th>
+                <th> humidity [%]</th>
             </tr>
         </table>
+        -->
 
         <!-- ================================ -->
         <!-- ============ Test code script ========= 
