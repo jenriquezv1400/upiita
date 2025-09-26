@@ -1,10 +1,10 @@
 <html>
     <style>
         body {
-               background-color: gray; 
+               background-color: grey; 
             }
         tr:nth-child(even) {
-                background-color: grey;
+                background-color: green;
             }
 
         /* width */
@@ -36,8 +36,9 @@
             Language: <span id="languageSpan" ></span> <br>
         </p> 
         <p>
-            <span id="languageDemo" ></span> <br>
-            Array number: <span id="languageSpan" ></span> <br>
+            <!-- <span id="languageDemo" ></span> <br> -->
+            Array number: <span id="arrayNumberSpan" ></span> <br>
+            Headers: <span id="headerSpan" ></span> <br>
         </p>   
 
 
@@ -53,21 +54,7 @@
             var arrayReplaced = [];
             var arrayReplacedTemp = [];
             var arrayNumbers = 0;
-
-            // ===== Set date ============
-            const d = new Date();
-            let year =  d.getFullYear();
-            let month = d.getMonth() + 1;
-            let date =  d.getDate();
-            let hour =  d.getHours();
-            let minutes =  d.getMinutes() ;
-            let seconds =  d.getSeconds() ;
-
-            const dayConcact = date + "." + month + "." + year;
-            const hourConcact = hour + ":" +minutes + ":" + seconds;
-
-            // === Show curren date and hour===
-            document.getElementById("date1").innerHTML = year +"." + month + "."+ date + " " + hour + ":" +minutes + ":" + seconds;
+            var initialLength = 0;
 
             // ===== 0 Get data App invento and split ============
             var appInventorInput = window.AppInventor.getWebViewString();
@@ -84,19 +71,28 @@
             //arrayReplaced = arrayReplacedTemp; //arrayReplaced[startFlag] = arrayReplacedTemp;                                
 
             // ====== Call Build table function ======
-            for (var i = 0; i < arrayReplaced.length - 1; i++){
-                if(){
+            for (var i = 0; i < aInventorSplitArray.length - 1; i++){
+                if(aInventorSplitArray[i] == "0000"){
                     arrayNumbers++;
                 }                    
             }
+            document.getElementById("arrayNumberSpan").innerHTML = arrayNumbers;
 
-            if (aInventorSplitArray[aInventorSplitArray.length-1] == "Alemán") {
-                document.getElementById("languageDemo").innerHTML = "Good day!";
-                BuildTable3(arrayReplaced,'dataTable');
-            } else {
-                document.getElementById("languageDemo").innerHTML = "";
-                BuildTable3(aInventorSplitArray,'dataTable');
+            if (arrayNumbers < 2){
+                initialLength = aInventorSplitArray.length-2;                    
+                BuildTableHeaders('dataTable');
+                document.getElementById("headerSpan").innerHTML = initialLength;
             }
+            else{
+                if (aInventorSplitArray[aInventorSplitArray.length-1] == "Alemán") {
+                //document.getElementById("languageDemo").innerHTML = "Good day!";
+                BuildTable3(arrayReplaced,'dataTable');
+                } else {
+                    document.getElementById("languageDemo").innerHTML = "";
+                    BuildTable3(aInventorSplitArray,'dataTable');
+                }
+            }
+            
             
             
 
@@ -108,8 +104,27 @@
                 window.getSelection().addRange(range)
                 document.execCommand('copy')
             }
+            // ====== Build headers table function 3 ======
+            function BuildTableHeaders(tableName){
+                var table2 = document.getElementById(tableName);
+                var newRow = ``;
 
-            // ====== Build table function 2 ======
+                for (var i = 0; i < initialLength + 2; i++){
+                    if (i == 0){
+                        newRow = newRow.concat(`<th>Date</th>`); //newRow.concat(
+                    }
+                    else if (i == 1){
+                        newRow = newRow.concat(`<th>Hour</th>`); //newRow.concat(
+                    }
+                    else{
+                        newRow = newRow.concat(`<th>Var${i-2}</th>`); //newRow.concat(
+                    }
+                }  
+                
+                table2.innerHTML += newRow;                      
+            }
+
+            // ====== Build table function 3 ======
             function BuildTable3(data,tableName){
                 var table2 = document.getElementById(tableName);
                 let newRowBT3 = ``;
@@ -244,7 +259,7 @@
                     //BuildTableTest(array,'dataTable2');
                     if (startFlag == 0){
                         //BuildTableTest(arrayOfArrays,'dataTable2');
-                        BuildTableHeaders('dataTable2');
+                        BuildTestTableHeaders('dataTable2');
                     }
                     else {
                         BuildTableInsertRow(arrayOfArrays,'dataTable2');
@@ -256,7 +271,7 @@
                 startFlag++;
 
                 // === Build table headers function Definition  =====
-                function BuildTableHeaders(tableName){
+                function BuildTestTableHeaders(tableName){
                     var table2 = document.getElementById(tableName);
                     var newRow = ``;
 
