@@ -54,6 +54,8 @@
             var arrayReplacedTemp = [];
             var arrayNumbers = 0;
             var initialLength = 0;
+            var data1 = 0;
+            var data2 = 0;
 
             // ===== 0 Get data App invento and split ============
             var appInventorInput = window.AppInventor.getWebViewString();
@@ -69,21 +71,24 @@
 
             //arrayReplaced = arrayReplacedTemp; //arrayReplaced[startFlag] = arrayReplacedTemp;                                
 
-            // ====== Call Build table function ======
+            // ====== initial length  ======
+
             for (var i = 0; i < aInventorSplitArray.length - 1; i++){
                 if(aInventorSplitArray[i] == "0000"){
-                    if (arrayNumbers < 1){
-                        initialLength = i;    //initialLength = aInventorSplitArray.length-2;                                    
+                    if (arrayNumbers == 0){
+                        data1 = i;
+                    }
+                    else if (arrayNumbers == 1){
+                        data2 = i;
+                        initialLength = data2 - data1 - 2;
                         document.getElementById("headerSpan").innerHTML = initialLength;
                     }
                     arrayNumbers++;
                 }                    
             }
-            document.getElementById("arrayNumberSpan").innerHTML = arrayNumbers;
+            document.getElementById("arrayNumberSpan").innerHTML = arrayNumbers;        
 
-            /*
-             
-                */           
+            // ====== Call Build table function ======
 
             if (aInventorSplitArray[aInventorSplitArray.length-1] == "Alemán") {                
                 BuildTable3(arrayReplaced,'dataTable');
@@ -102,25 +107,7 @@
                 window.getSelection().addRange(range)
                 document.execCommand('copy')
             }
-            // ====== Build headers table function 3 ======
-            function BuildTableHeaders(tableName){
-                var table2 = document.getElementById(tableName);
-                var newRow = ``;
 
-                for (var i = 0; i < initialLength + 1; i++){
-                    if (i == 0){
-                        newRow = newRow.concat(`<th>Date</th>`); //newRow.concat(
-                    }
-                    else if (i == 1){
-                        newRow = newRow.concat(`<th>Hour</th>`); //newRow.concat(
-                    }
-                    else{
-                        newRow = newRow.concat(`<th>Var${i-2}</th>`); //newRow.concat(
-                    }
-                }  
-                
-                table2.innerHTML += newRow;                      
-            }
 
             // ====== Build table function 3 ======
             function BuildTable3(data,tableName){
@@ -128,7 +115,7 @@
                 let newRow = ``;
                 let newRowBT3 = ``;
 
-                for (var i = 0; i < initialLength + 1; i++){
+                for (var i = 0; i < initialLength ; i++){
                     if (i == 0){
                         newRow = newRow.concat(`<th>Date</th>`); //newRow.concat(
                     }
@@ -142,19 +129,21 @@
                 
                 table2.innerHTML += newRow;                      
 
-                for (var i = 0; i < data.length-1; i++){
-                    if (i == 0) {
-                        newRowBT3 = newRowBT3.concat(`<tr>`);
-                    }
-                    else if (data[i] == "0000") {
-                        newRowBT3 = newRowBT3.concat(`</tr>`);
-                        i++;
-                    }
-                    else{
-                        newRowBT3 = newRowBT3.concat(`<td>${data[i]}</td>`);
-                    }
-                }   
-                table2.innerHTML += newRowBT3;
+                if (arrayNumbers > 2){
+                    for (var i = data1 + 2; i < data.length-1; i++){
+                        if (i == data1) {
+                            newRowBT3 = newRowBT3.concat(`<tr>`);
+                        }
+                        else if (data[i] == "0000") {
+                            newRowBT3 = newRowBT3.concat(`</tr>`);
+                            i++;
+                        }
+                        else{
+                            newRowBT3 = newRowBT3.concat(`<td>${data[i]}</td>`);
+                        }
+                    }   
+                    table2.innerHTML += newRowBT3;
+                }                
             }
         </script>
 
