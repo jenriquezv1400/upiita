@@ -35,8 +35,7 @@
             <input type="button" value="Copy Table" onClick="copytable('dataTable')">
             Language: <span id="languageSpan" ></span> <br>
         </p> 
-        <p>
-            <!-- <span id="languageDemo" ></span> <br> -->
+        <p>            
             Array number: <span id="arrayNumberSpan" ></span> <br>
             Headers: <span id="headerSpan" ></span> <br>
         </p>   
@@ -73,24 +72,23 @@
             // ====== Call Build table function ======
             for (var i = 0; i < aInventorSplitArray.length - 1; i++){
                 if(aInventorSplitArray[i] == "0000"){
+                    if (arrayNumbers < 1){
+                        initialLength = i;    //initialLength = aInventorSplitArray.length-2;                                    
+                        document.getElementById("headerSpan").innerHTML = initialLength;
+                    }
                     arrayNumbers++;
                 }                    
             }
             document.getElementById("arrayNumberSpan").innerHTML = arrayNumbers;
 
-            if (arrayNumbers < 2){
-                initialLength = aInventorSplitArray.length-2;                    
-                BuildTableHeaders('dataTable');
-                document.getElementById("headerSpan").innerHTML = initialLength;
-            }
-            else{
-                if (aInventorSplitArray[aInventorSplitArray.length-1] == "Alemán") {
-                //document.getElementById("languageDemo").innerHTML = "Good day!";
+            /*
+             
+                */           
+
+            if (aInventorSplitArray[aInventorSplitArray.length-1] == "Alemán") {                
                 BuildTable3(arrayReplaced,'dataTable');
-                } else {
-                    document.getElementById("languageDemo").innerHTML = "";
-                    BuildTable3(aInventorSplitArray,'dataTable');
-                }
+            } else {                
+                BuildTable3(aInventorSplitArray,'dataTable');
             }
             
             
@@ -109,7 +107,7 @@
                 var table2 = document.getElementById(tableName);
                 var newRow = ``;
 
-                for (var i = 0; i < initialLength + 2; i++){
+                for (var i = 0; i < initialLength + 1; i++){
                     if (i == 0){
                         newRow = newRow.concat(`<th>Date</th>`); //newRow.concat(
                     }
@@ -127,7 +125,22 @@
             // ====== Build table function 3 ======
             function BuildTable3(data,tableName){
                 var table2 = document.getElementById(tableName);
+                let newRow = ``;
                 let newRowBT3 = ``;
+
+                for (var i = 0; i < initialLength + 1; i++){
+                    if (i == 0){
+                        newRow = newRow.concat(`<th>Date</th>`); //newRow.concat(
+                    }
+                    else if (i == 1){
+                        newRow = newRow.concat(`<th>Hour</th>`); //newRow.concat(
+                    }
+                    else{
+                        newRow = newRow.concat(`<th>Var${i-2}</th>`); //newRow.concat(
+                    }
+                }  
+                
+                table2.innerHTML += newRow;                      
 
                 for (var i = 0; i < data.length-1; i++){
                     if (i == 0) {
@@ -157,7 +170,7 @@
         <!-- Show data -->
         <p>
             StringBleDataMatrix: <span id="concatStringSpan" ></span>    <br>
-            Initial length: <span id="initialLengthSpan" ></span>    <br>
+            Initial length: <span id="initLengthSpan" ></span>    <br>
             Array of arrays: <span id="aArraysSpan" ></span>            <br>         
             Current array: <span id="currentSpanArray" ></span>            <br>         
             Language: <span id="languageSpan2" ></span>    <br>
@@ -179,7 +192,7 @@
 
         <script>
             let concatString = "";
-            var initialLength ;
+            var iniLength ;
             var startFlag = 0;
             let arrayOfArrays = [];
             var arrayReplacedTemp = [];
@@ -222,9 +235,9 @@
                 
                 // === Make arrya of arrays ====
                 if (startFlag == 0){
-                    initialLength = array.length-2;                    
+                    iniLength = array.length-2;                    
                 }
-                document.getElementById("initialLengthSpan").innerHTML = initialLength;
+                document.getElementById("initLengthSpan").innerHTML = iniLength;
 
                 arrayOfArrays[startFlag] = stringInputValue.split(","); // concatString;//[startFlag] = concatString;//
                 
@@ -235,7 +248,7 @@
                 document.getElementById("languageSpan2").innerHTML = array[array.length-1];
 
                 // ==== 1.1 Array Repleced ======
-                for (var i = 0; i < initialLength ; i++){
+                for (var i = 0; i < iniLength ; i++){
                     arrayReplacedTemp[i] = arrayOfArrays[startFlag][i].replace(".",",");
                 }
 
@@ -275,7 +288,7 @@
                     var table2 = document.getElementById(tableName);
                     var newRow = ``;
 
-                    for (var i = 0; i < initialLength + 2; i++){
+                    for (var i = 0; i < iniLength + 2; i++){
                         if (i == 0){
                             newRow = newRow.concat(`<th>Date</th>`); //newRow.concat(
                         }
@@ -298,7 +311,7 @@
 
                     let rows = table.rows;
                     
-                    for (var i = 0; i < initialLength + 2; i++){
+                    for (var i = 0; i < iniLength + 2; i++){
                         if (i == 0){
                             row.insertCell(i).innerHTML = dayConcact;
                         }
@@ -323,7 +336,7 @@
 
                     
                     document.getElementById("rowsLengthSpan").innerHTML = rows.length;
-                    document.getElementById("cellsLength").innerHTML = initialLength;                        
+                    document.getElementById("cellsLength").innerHTML = iniLength;                        
                 }
 
                 
